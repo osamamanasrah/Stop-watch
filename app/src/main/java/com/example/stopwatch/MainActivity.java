@@ -1,5 +1,6 @@
 package com.example.stopwatch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -19,8 +20,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         editText=findViewById(R.id.edtStop);
         runner();
+        checkInstanceState(savedInstanceState);
     }
 
+    public void checkInstanceState(Bundle outState){
+        if(outState != null){
+            isRunning=outState.getBoolean("isRunning");
+            seconds= outState.getInt("seconds");
+        }
+    }
     public void btnStartOnClick(View view) {
         isRunning = true;
     }
@@ -52,5 +60,12 @@ public class MainActivity extends AppCompatActivity {
                 handler.postDelayed(this , 1000);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("seconds", seconds);
+        outState.putBoolean("isRunning", isRunning);
     }
 }
